@@ -3,8 +3,8 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Page not found - Programs from THE BOOK</title>
-        <base href="/">
+        <title>Programs from THE BOOK</title>
+        <meta name="robots" content="noindex">
 
 
         <!-- Custom HTML head -->
@@ -193,8 +193,56 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="termux-开发者日志"><a class="header" href="#termux-开发者日志">Termux 开发者日志</a></h1>
+<p>Termux 可以直接安装 mdBook 及 Typst, 但 Lean4 Prover 的 arm64 版因为链接依赖问题不能直接运行, 依惯例可用 <code>proot-distro</code>.</p>
+<h3 id="code-server"><a class="header" href="#code-server">Code Server</a></h3>
+<p>Termux 添加 tur 仓库后</p>
+<pre><code class="language-sh">pkg install tur-repo
+</code></pre>
+<p>可以直接安装 code-server</p>
+<pre><code class="language-sh">pkg install code-server
+</code></pre>
+<p>随后在 <code>~/.config/code-server/config.yaml</code> 修改 <code>password</code>.</p>
+<p>注意:</p>
+<ul>
+<li>
+<p>vscode 插件市场的插件无法直接安装, 但可以在 <a href="https://open-vsx.org">open-vsx.org</a> 下载 vsix 并使用 <code>--install-extension</code> 安装至 <code>~/.local/share/code-server/extensions</code>.</p>
+<pre><code>code-server --install-extension vsix-path
+</code></pre>
+</li>
+<li>
+<p>因为 elf 执行权限和 Linux 某些基础库的问题, 多数插件 (涉及二进制可执行文件的) 不能直接在 Termux code-server 上工作, 此时需要 <code>proot-distro</code> 将 code-server 安装至某个 Linux 发行版.</p>
+</li>
+<li>
+<p>建议使用带有独立 Chromium 内核的浏览器 (如 Kiwi Browser) 访问 Code Server, 安卓系统的 Chromium Webview 版本对于 VSCode 而言可能过低.</p>
+</li>
+</ul>
+<p>参考:</p>
+<ul>
+<li><a href="https://github.com/termux-user-repository/tur">Termux User Repository (TUR)</a></li>
+</ul>
+<h3 id="符号链接权限问题"><a class="header" href="#符号链接权限问题">符号链接权限问题</a></h3>
+<p>如 <code>npm i</code> 时可能会出现的</p>
+<pre><code class="language-sh">npm ERR! code EACCES
+npm ERR! syscall symlink
+npm ERR! path ...
+npm ERR! dest .../node_modules/.bin/...
+npm ERR! errno -13
+npm ERR! Error: EACCES: permission denied, symlink
+</code></pre>
+<p>除 “用 proot-distro 换成某个 Linux 发行版” 从而将此问题绕过外, 原地进行的方案是使用 <code>npm i</code> 本身支持的一个参数 <code>--no-bin-links</code>.</p>
+<p>参考:</p>
+<blockquote>
+<p>The --no-bin-links argument will prevent npm from creating symlinks for any binaries the package might contain.</p>
+</blockquote>
+<ul>
+<li>
+<p><a href="https://stackoverflow.com/questions/39098812/npm-install-when-to-use-no-bin-links">npm install: when to use --no-bin-links?</a></p>
+</li>
+<li>
+<p><a href="https://stackoverflow.com/questions/72407250/how-can-i-use-npm-install-ts-node-dev-d-in-termux">how can i use "npm install ts-node-dev -D" in termux?</a></p>
+</li>
+</ul>
 
                     </main>
 
@@ -231,6 +279,11 @@
 
         <!-- Custom JS scripts -->
 
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
 
     </div>
     </body>
