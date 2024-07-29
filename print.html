@@ -295,48 +295,55 @@ hint: "git config advice.graftFileDeprecated false"
 <p>也有人称之为 Git 哲学.</p>
 </div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphviz-dot-风味指南"><a class="header" href="#graphviz-dot-风味指南">Graphviz Dot 风味指南</a></h1>
-<p>本文主要是记录 Graphviz 样式的命令行用法, 即 <code>dot</code>. 并给出相关例子以备笔者不时之需. 动机是官方文档 <a href="https://graphviz.org/doc/info/command.html">Command Line | Graphviz</a> 稍显简略, 而例子则分散于各大论坛.</p>
+<p>本文主要是记录 Graphviz 样式的命令行用法, 即 <code>dot</code>. 并给出相关例子, 以备笔者不时之需. 动机是官方文档 <a href="https://graphviz.org/doc/info/command.html">Command Line - Graphviz</a> 稍显简略, 而常用例子则分散于各大论坛.</p>
 <h3 id="tldr"><a class="header" href="#tldr">TLDR</a></h3>
-<pre><code class="language-sh">dot -Tsvg -Nfontname="Jetbrains Mono" -Earrowsize="0.5" -Nshape=square -Nmargin="0.2" -Nfontsize="20pt" -Gsplines=ortho input.dot -o output.svg
+<pre><code class="language-sh">dot -Tsvg \
+    -Nfontname="Jetbrains Mono" \
+    -Earrowsize="0.5" \ 
+    -Nshape=square \
+    -Nmargin="0.2" \
+    -Nfontsize="20pt" \
+    -Gsplines=ortho \
+  input.dot -o output.svg
 </code></pre>
 <ul>
 <li>
-<p>结点字体 <code>-Nfontname="Jetbrains Mono"</code> (resp. <code>-G</code>, <code>-E</code>) https://stackoverflow.com/questions/10879115/graphviz-change-font-for-the-whole-graph.</p>
+<p>结点字体 <code>-Nfontname="Jetbrains Mono"</code> (resp. <code>-G</code>, <code>-E</code>) <a href="https://stackoverflow.com/questions/10879115/graphviz-change-font-for-the-whole-graph">stackoverflow: graphviz-change-font-for-the-whole-graph</a>.</p>
 </li>
 <li>
 <p>箭头尺寸 <code>-Earrowsize="0.5"</code>.</p>
 </li>
 <li>
-<p>路径 / 边的风格 `` (splines - Controls how, and if, edges are represented) https://stackoverflow.com/questions/24107451/how-can-i-direct-dot-to-use-a-shorter-edge-path</p>
+<p>路径 / 边的风格 `` (splines - Controls how, and if, edges are represented) <a href="https://stackoverflow.com/questions/24107451/how-can-i-direct-dot-to-use-a-shorter-edge-path">stackoverflow: how-can-i-direct-dot-to-use-a-shorter-edge-path</a>.</p>
 </li>
 </ul>
 <hr />
 <h3 id="进一步的阅读"><a class="header" href="#进一步的阅读">进一步的阅读</a></h3>
 <ul>
 <li>
-<p>输出格式. https://graphviz.org/docs/outputs/</p>
+<p>输出格式. 见 <a href="https://graphviz.org/docs/outputs/">graphviz.org/docs/outputs</a></p>
 </li>
 <li>
-<p>Attributes. https://graphviz.org/doc/info/attrs.html</p>
+<p>Attributes. <a href="https://graphviz.org/doc/info/attrs.html">graphviz.org/doc/info/attrs.html</a></p>
 <ul>
-<li>https://graphviz.org/docs/nodes/</li>
-<li>https://graphviz.org/docs/edges/</li>
-<li>https://graphviz.org/docs/graph/</li>
-<li>https://graphviz.org/doc/info/arrows.html</li>
-<li>https://graphviz.org/doc/info/shapes.html</li>
+<li><a href="https://graphviz.org/docs/nodes/">graphviz.org/docs/nodes</a></li>
+<li><a href="https://graphviz.org/docs/edges/">graphviz.org/docs/edges</a></li>
+<li><a href="https://graphviz.org/docs/graph/">graphviz.org/docs/graph</a></li>
+<li><a href="https://graphviz.org/doc/info/arrows.html">graphviz.org/doc/info/arrows.html</a></li>
+<li><a href="https://graphviz.org/doc/info/shapes.html">graphviz.org/doc/info/shapes.html</a></li>
 </ul>
 </li>
 <li>
-<p>Theory / Publications. https://graphviz.org/theory</p>
+<p>Theory / Publications. <a href="https://graphviz.org/theory">graphviz.org/theory</a></p>
 </li>
 </ul>
 <h3 id="相关"><a class="header" href="#相关">相关</a></h3>
 <ul>
 <li>
-<p>https://stackoverflow.com/questions/2333025/graphviz-changing-the-size-of-edge</p>
+<p><a href="https://stackoverflow.com/questions/2333025/graphviz-changing-the-size-of-edge">stackoverflow.com: graphviz-changing-the-size-of-edge</a></p>
 </li>
 <li>
-<p>https://unix.stackexchange.com/questions/670533/how-to-set-default-font-or-default-style-in-graphvizs-dot-language</p>
+<p><a href="https://unix.stackexchange.com/questions/670533/how-to-set-default-font-or-default-style-in-graphvizs-dot-language">unix.stackexchange: how-to-set-default-font-or-default-style-in-graphvizs-dot-language</a></p>
 </li>
 </ul>
 
