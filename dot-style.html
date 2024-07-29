@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Page not found - Programs from THE BOOK</title>
-        <base href="/">
+        <title>附录: Graphviz Dot 风味指南 - Programs from THE BOOK</title>
 
 
         <!-- Custom HTML head -->
@@ -108,7 +107,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="termux-developer-journals.html"><strong aria-hidden="true">1.</strong> 附录: Termux 开发者日志</a></li><li class="chapter-item expanded "><a href="git-grafts.html"><strong aria-hidden="true">2.</strong> 附录: 黑魔法 - Git 毀滅術</a></li><li class="chapter-item expanded "><a href="dot-style.html"><strong aria-hidden="true">3.</strong> 附录: Graphviz Dot 风味指南</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="termux-developer-journals.html"><strong aria-hidden="true">1.</strong> 附录: Termux 开发者日志</a></li><li class="chapter-item expanded "><a href="git-grafts.html"><strong aria-hidden="true">2.</strong> 附录: 黑魔法 - Git 毀滅術</a></li><li class="chapter-item expanded "><a href="dot-style.html" class="active"><strong aria-hidden="true">3.</strong> 附录: Graphviz Dot 风味指南</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -193,13 +192,59 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="graphviz-dot-风味指南"><a class="header" href="#graphviz-dot-风味指南">Graphviz Dot 风味指南</a></h1>
+<p>本文主要是记录 Graphviz 样式的命令行用法, 即 <code>dot</code>. 并给出相关例子以备笔者不时之需. 动机是官方文档 <a href="https://graphviz.org/doc/info/command.html">Command Line | Graphviz</a> 稍显简略, 而例子则分散于各大论坛.</p>
+<h3 id="tldr"><a class="header" href="#tldr">TLDR</a></h3>
+<pre><code class="language-sh">dot -Tsvg -Nfontname="Jetbrains Mono" -Earrowsize="0.5" -Nshape=square -Nmargin="0.2" -Nfontsize="20pt" -Gsplines=ortho input.dot -o output.svg
+</code></pre>
+<ul>
+<li>
+<p>结点字体 <code>-Nfontname="Jetbrains Mono"</code> (resp. <code>-G</code>, <code>-E</code>) https://stackoverflow.com/questions/10879115/graphviz-change-font-for-the-whole-graph.</p>
+</li>
+<li>
+<p>箭头尺寸 <code>-Earrowsize="0.5"</code>.</p>
+</li>
+<li>
+<p>路径 / 边的风格 `` (splines - Controls how, and if, edges are represented) https://stackoverflow.com/questions/24107451/how-can-i-direct-dot-to-use-a-shorter-edge-path</p>
+</li>
+</ul>
+<hr />
+<h3 id="进一步的阅读"><a class="header" href="#进一步的阅读">进一步的阅读</a></h3>
+<ul>
+<li>
+<p>输出格式. https://graphviz.org/docs/outputs/</p>
+</li>
+<li>
+<p>Attributes. https://graphviz.org/doc/info/attrs.html</p>
+<ul>
+<li>https://graphviz.org/docs/nodes/</li>
+<li>https://graphviz.org/docs/edges/</li>
+<li>https://graphviz.org/docs/graph/</li>
+<li>https://graphviz.org/doc/info/arrows.html</li>
+<li>https://graphviz.org/doc/info/shapes.html</li>
+</ul>
+</li>
+<li>
+<p>Theory / Publications. https://graphviz.org/theory</p>
+</li>
+</ul>
+<h3 id="相关"><a class="header" href="#相关">相关</a></h3>
+<ul>
+<li>
+<p>https://stackoverflow.com/questions/2333025/graphviz-changing-the-size-of-edge</p>
+</li>
+<li>
+<p>https://unix.stackexchange.com/questions/670533/how-to-set-default-font-or-default-style-in-graphvizs-dot-language</p>
+</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="git-grafts.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
 
                         <div style="clear: both"></div>
@@ -208,6 +253,9 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="git-grafts.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
             </nav>
 

@@ -107,7 +107,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="termux-developer-journals.html"><strong aria-hidden="true">1.</strong> 附录: Termux 开发者日志</a></li><li class="chapter-item expanded "><a href="git-grafts.html" class="active"><strong aria-hidden="true">2.</strong> 附录: 黑魔法 - Git 毀滅術</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="termux-developer-journals.html"><strong aria-hidden="true">1.</strong> 附录: Termux 开发者日志</a></li><li class="chapter-item expanded "><a href="git-grafts.html" class="active"><strong aria-hidden="true">2.</strong> 附录: 黑魔法 - Git 毀滅術</a></li><li class="chapter-item expanded "><a href="dot-style.html"><strong aria-hidden="true">3.</strong> 附录: Graphviz Dot 风味指南</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -225,6 +225,21 @@ hint: "git config advice.graftFileDeprecated false"
 <p>此时 <code>git log</code> 会发现只能看到目标 commit 之后的历史了.</p>
 <h3 id="step-2"><a class="header" href="#step-2">Step 2</a></h3>
 <p>执行 <code>git filter-branch</code> 后, 如果只有当前分支, 则直接强推 (<code>git push --force</code>), 如果有新的 detached 的分支, 为当前分支新建临时分支, 然后临时分支推送到远程仓库. 结束.</p>
+<hr />
+<h3 id="附录"><a class="header" href="#附录">附录</a></h3>
+<h4 id="关于--filter-branch-的注记"><a class="header" href="#关于--filter-branch-的注记">关于 <code> filter-branch</code> 的注记</a></h4>
+<blockquote>
+<p>让你可以通过重写 &lt;rev-list 选项&gt; 中提到的分支来重写 Git 修订历史, 并对每个修订应用自定义过滤器. 这些过滤器可以修改每棵树 (例如删除文件或在所有文件上运行 perl 重写) 或每个提交的信息. 否则, 所有信息 (包括原始提交时间或合并信息) 都将被保留.</p>
+</blockquote>
+<blockquote>
+<p>该命令只会重写命令行中提到的 positive refs (例如, 如果您传递 a..b, 则只会重写 b). 如果不指定过滤器, 提交将在不做任何改动的情况下重新提交, 这通常不会产生任何影响. 不过, 这在将来补偿某些 Git bug 或类似问题时可能会有用, 因此允许使用这种方法.</p>
+</blockquote>
+<blockquote>
+<p>注意: 此命令尊重 <code>.git/info/grafts</code> 文件和 <code>refs/replace/</code> 命名空间中的引用. 如果您定义了任何移植物或替换引用, 运行此命令将使其永久生效.</p>
+</blockquote>
+<ul>
+<li>https://git-scm.com/docs/git-filter-branch/zh_HANS-CN</li>
+</ul>
 <div class="footnote-definition" id="git-philosophy"><sup class="footnote-definition-label">1</sup>
 <p>也有人称之为 Git 哲学.</p>
 </div>
@@ -237,6 +252,9 @@ hint: "git config advice.graftFileDeprecated false"
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="dot-style.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -248,6 +266,9 @@ hint: "git config advice.graftFileDeprecated false"
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="dot-style.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
