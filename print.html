@@ -295,7 +295,7 @@ hint: "git config advice.graftFileDeprecated false"
 <p>也有人称之为 Git 哲学.</p>
 </div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphviz-dot-风味指南"><a class="header" href="#graphviz-dot-风味指南">Graphviz Dot 风味指南</a></h1>
-<p>本文主要是记录 Graphviz 样式的命令行用法, 即 <code>dot</code>. 并给出相关例子, 以备笔者不时之需. 动机是官方文档 <a href="https://graphviz.org/doc/info/command.html">Command Line - Graphviz</a> 稍显简略, 而常用例子则分散于各大论坛.</p>
+<p>本文主要记录 Graphviz 样式的命令行用法, 即 <code>dot</code>. 并给出相关例子, 以备笔者不时之需. 动机是官方文档 <a href="https://graphviz.org/doc/info/command.html">Command Line - Graphviz</a> 稍显简略, 而常用例子则分散于各大论坛不便查阅.</p>
 <h3 id="tldr"><a class="header" href="#tldr">TLDR</a></h3>
 <pre><code class="language-sh">dot -Tsvg \
     -Nfontname="Jetbrains Mono" \
@@ -315,6 +315,9 @@ hint: "git config advice.graftFileDeprecated false"
 </li>
 <li>
 <p>路径 / 边的风格 `` (splines - Controls how, and if, edges are represented) <a href="https://stackoverflow.com/questions/24107451/how-can-i-direct-dot-to-use-a-shorter-edge-path">stackoverflow: how-can-i-direct-dot-to-use-a-shorter-edge-path</a>.</p>
+</li>
+<li>
+<p>布局引擎 (e.g. <code>-Kcirco</code>) <a href="https://graphviz.org/docs/layouts/">graphviz.org/docs/layouts</a>.</p>
 </li>
 </ul>
 <hr />
