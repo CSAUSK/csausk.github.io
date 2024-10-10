@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>附录: Graphviz Dot 风味指南 - Programs from THE BOOK</title>
+        <title>附录: WSL 清理支援 - Programs from THE BOOK</title>
 
 
         <!-- Custom HTML head -->
@@ -107,7 +107,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="termux-developer-journals.html"><strong aria-hidden="true">1.</strong> 附录: Termux 开发者日志</a></li><li class="chapter-item expanded "><a href="dot-style.html" class="active"><strong aria-hidden="true">2.</strong> 附录: Graphviz Dot 风味指南</a></li><li class="chapter-item expanded "><a href="git-grafts.html"><strong aria-hidden="true">3.</strong> 附录: 黑魔法 - Git 毀滅術</a></li><li class="chapter-item expanded "><a href="wsl-clean-help.html"><strong aria-hidden="true">4.</strong> 附录: WSL 清理支援</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="termux-developer-journals.html"><strong aria-hidden="true">1.</strong> 附录: Termux 开发者日志</a></li><li class="chapter-item expanded "><a href="dot-style.html"><strong aria-hidden="true">2.</strong> 附录: Graphviz Dot 风味指南</a></li><li class="chapter-item expanded "><a href="git-grafts.html"><strong aria-hidden="true">3.</strong> 附录: 黑魔法 - Git 毀滅術</a></li><li class="chapter-item expanded "><a href="wsl-clean-help.html" class="active"><strong aria-hidden="true">4.</strong> 附录: WSL 清理支援</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -192,73 +192,63 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="graphviz-dot-风味指南"><a class="header" href="#graphviz-dot-风味指南">Graphviz Dot 风味指南</a></h1>
-<p>本文主要记录 Graphviz 样式的命令行用法, 即 <code>dot</code>. 并给出相关例子, 以备笔者不时之需. 动机是官方文档 <a href="https://graphviz.org/doc/info/command.html">Command Line - Graphviz</a> 稍显简略, 而常用例子则分散于各大论坛不便查阅.</p>
-<h3 id="tldr"><a class="header" href="#tldr">TLDR</a></h3>
-<pre><code class="language-sh">dot -Tsvg \
-    -Nfontname="Jetbrains Mono" \
-    -Earrowsize="0.5" \ 
-    -Nshape=square \
-    -Nmargin="0.2" \
-    -Nfontsize="20pt" \
-    -Gsplines=ortho \
-  input.dot -o output.svg
+                        <h1 id="wsl-清理支援"><a class="header" href="#wsl-清理支援">WSL 清理支援</a></h1>
+<p>注: 本文的 WSL 特指 WSL2.</p>
+<h3 id="准备工作"><a class="header" href="#准备工作">准备工作</a></h3>
+<p>Step 1. 通过以下两种方式之一关闭目标 WSL.</p>
+<ul>
+<li><code>wsl --shutdown</code>, 立即终止所有正在运行的分发版和 WSL 2 轻型实用工具虚拟机.</li>
+<li><code>wsl --terminate, -t &lt;Distro&gt;</code>, 终止指定的分发版.</li>
+</ul>
+<p>Step 2. 找到该 WSL 的硬盘映像文件 <code>ext4.vhdx</code>.</p>
+<p>Step 3. 在终端打开 Windows 的磁盘管理工具 <code>diskpart</code>. 并通过</p>
+<pre><code>SELECT VDISK file="\path\to\ext4.vhdx"
 </code></pre>
-<ul>
-<li>
-<p>结点字体 <code>-Nfontname="Jetbrains Mono"</code> (resp. <code>-G</code>, <code>-E</code>) <a href="https://stackoverflow.com/questions/10879115/graphviz-change-font-for-the-whole-graph">stackoverflow: graphviz-change-font-for-the-whole-graph</a>.</p>
+<p>选择该虚拟磁盘文件.</p>
+<h3 id="压缩"><a class="header" href="#压缩">压缩</a></h3>
+<p>在 <code>diskpart</code> 中继续操作, 此步骤可能会耗费一定的时间</p>
+<pre><code>compact vdisk
+</code></pre>
+<p>注:</p>
+<ol>
+<li>在部分设备上, <code>compact</code> 前后有时还需要 <code>attach vdisk readonly</code>, <code>detach vdisk</code>.</li>
+<li>对于非 Windows 家庭版, 也可以直接使用
+<pre><code>optimize-vhd -Path path\to\ext4.vhdx -Mode full
+</code></pre>
 </li>
-<li>
-<p>箭头尺寸 <code>-Earrowsize="0.5"</code>.</p>
-</li>
-<li>
-<p>路径 / 边的风格 `` (splines - Controls how, and if, edges are represented) <a href="https://stackoverflow.com/questions/24107451/how-can-i-direct-dot-to-use-a-shorter-edge-path">stackoverflow: how-can-i-direct-dot-to-use-a-shorter-edge-path</a>.</p>
-</li>
-<li>
-<p>布局引擎 (e.g. <code>-Kcirco</code>) <a href="https://graphviz.org/docs/layouts/">graphviz.org/docs/layouts</a>.</p>
-</li>
-</ul>
+<li>压缩磁盘主要解决的是 "Linux 清理后 vhdx 尺寸不会主动减小" 的问题,
+而对于具体的 Linux 发行版以及各路包管理器如何清理则不在本文的讨论范围内.</li>
+</ol>
+<h3 id="wsl-迁移"><a class="header" href="#wsl-迁移">WSL 迁移</a></h3>
+<p>有时 WSL 本身就很大, 无法通过 <code>compact vdisk</code> 腾出可用空间. 此时更有效的方法是移动 <code>vhdx</code> 文件至其他空间充裕的分区或磁盘. 这个方法实施起来更加复杂, 但所幸已有封装好的工具: <a href="https://github.com/pxlrbt/move-wsl">Move WSL</a>.</p>
 <hr />
-<h3 id="进一步的阅读"><a class="header" href="#进一步的阅读">进一步的阅读</a></h3>
-<ul>
-<li>
-<p>输出格式. 见 <a href="https://graphviz.org/docs/outputs/">graphviz.org/docs/outputs</a></p>
-</li>
-<li>
-<p>Attributes. <a href="https://graphviz.org/doc/info/attrs.html">graphviz.org/doc/info/attrs.html</a></p>
-<ul>
-<li><a href="https://graphviz.org/docs/nodes/">graphviz.org/docs/nodes</a></li>
-<li><a href="https://graphviz.org/docs/edges/">graphviz.org/docs/edges</a></li>
-<li><a href="https://graphviz.org/docs/graph/">graphviz.org/docs/graph</a></li>
-<li><a href="https://graphviz.org/doc/info/arrows.html">graphviz.org/doc/info/arrows.html</a></li>
-<li><a href="https://graphviz.org/doc/info/shapes.html">graphviz.org/doc/info/shapes.html</a></li>
-</ul>
-</li>
-<li>
-<p>Theory / Publications. <a href="https://graphviz.org/theory">graphviz.org/theory</a></p>
-</li>
-</ul>
-<h3 id="相关"><a class="header" href="#相关">相关</a></h3>
-<ul>
-<li>
-<p><a href="https://stackoverflow.com/questions/2333025/graphviz-changing-the-size-of-edge">stackoverflow.com: graphviz-changing-the-size-of-edge</a></p>
-</li>
-<li>
-<p><a href="https://unix.stackexchange.com/questions/670533/how-to-set-default-font-or-default-style-in-graphvizs-dot-language">unix.stackexchange: how-to-set-default-font-or-default-style-in-graphvizs-dot-language</a></p>
-</li>
-</ul>
+<p>微软商店能安装的 WSL 虽然包括了主流的 Linux 发行版, 但如果是奔着 Arch 来的又不想在安装和基础配置上折腾, 那这个仓库可能是一个好选择: <a href="https://github.com/yuk7/ArchWSL">https://github.com/yuk7/ArchWSL</a>.</p>
+<h3 id="linux-内部清理"><a class="header" href="#linux-内部清理">Linux 内部清理</a></h3>
+<p>Windows 上有一些优秀的磁盘扫描工具, 通常能够为用户找到大文件所在的位置.
+但可以预见的是, 这些工具并不能直接扫描 WSL 内部的文件系统,
+此时用户可以使用完全 Linux 的方法来处理这个问题. 以下仅举一例</p>
+<pre><code>sudo du -xh --max-depth=1 /
+</code></pre>
+<p>这会输出形如下面的内容</p>
+<pre><code>12G     /root
+24K     /snap
+2.0G    /usr
+12K     /mnt
+1.7G    /var
+177M    /home
+481M    /nix
+72K     /tmp
+16G     /
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="termux-developer-journals.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="git-grafts.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="git-grafts.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -266,13 +256,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="termux-developer-journals.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="git-grafts.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="git-grafts.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

@@ -108,7 +108,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="termux-developer-journals.html"><strong aria-hidden="true">1.</strong> 附录: Termux 开发者日志</a></li><li class="chapter-item expanded "><a href="git-grafts.html"><strong aria-hidden="true">2.</strong> 附录: 黑魔法 - Git 毀滅術</a></li><li class="chapter-item expanded "><a href="dot-style.html"><strong aria-hidden="true">3.</strong> 附录: Graphviz Dot 风味指南</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="termux-developer-journals.html"><strong aria-hidden="true">1.</strong> 附录: Termux 开发者日志</a></li><li class="chapter-item expanded "><a href="dot-style.html"><strong aria-hidden="true">2.</strong> 附录: Graphviz Dot 风味指南</a></li><li class="chapter-item expanded "><a href="git-grafts.html"><strong aria-hidden="true">3.</strong> 附录: 黑魔法 - Git 毀滅術</a></li><li class="chapter-item expanded "><a href="wsl-clean-help.html"><strong aria-hidden="true">4.</strong> 附录: WSL 清理支援</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -243,57 +243,6 @@ npm ERR! Error: EACCES: permission denied, symlink
 <p><a href="https://stackoverflow.com/questions/72407250/how-can-i-use-npm-install-ts-node-dev-d-in-termux">how can i use "npm install ts-node-dev -D" in termux?</a></p>
 </li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="git-毀滅術"><a class="header" href="#git-毀滅術">Git 毀滅術</a></h1>
-<pre><code>hint: Support for &lt;GIT_DIR&gt;/info/grafts is deprecated
-hint: and will be removed in a future Git version.
-hint:
-hint: Please use "git replace --convert-graft-file"
-hint: to convert the grafts into replace refs.
-hint:
-hint: Turn this message off by running
-hint: "git config advice.graftFileDeprecated false"
-</code></pre>
-<p>版本管理工具 Git 以 “绝不丢失用户的提交” 的理念 <sup class="footnote-reference"><a href="#git-philosophy">1</a></sup> 而著称. 但在 Git 中也存在着「确实地」将 commit 与 log 中的记录 “毁尸灭迹” 的办法. 并且操作起来非常简单, 实际步骤只有两步.</p>
-<blockquote>
-<p>警告: 本文作者对本文提供的方法不负任何责任, 读者通过本文的方法所造成的任何超出读者预期的行为, 均由读者自行负责.</p>
-</blockquote>
-<blockquote>
-<p>特别声明: 本文的方法可以用于删除已经提交至 Github 仓库托管平台的 commit 历史.</p>
-</blockquote>
-<hr />
-<pre><code>⋯ → A → B → C (目标 commit) → D → E → ⋯
-</code></pre>
-<p>本文提供的方法将会删除目标 commit “C” 之前的所有 commit 信息.</p>
-<h3 id="准备工作"><a class="header" href="#准备工作">准备工作</a></h3>
-<p>阅读「警告」与「特别声明」.</p>
-<p><code>git log</code> 查看 commit 历史及对应的 SHA1 值, 复制目标 commit 的 SHA1.</p>
-<h3 id="step-1"><a class="header" href="#step-1">Step 1</a></h3>
-<p>新建 <code>.git/info/grafts</code>, 写入 SHA1.</p>
-<h3 id="检查"><a class="header" href="#检查">检查</a></h3>
-<blockquote>
-<p>这一步显然不是必要的, 只是为了确定前面的操作是否正常.</p>
-</blockquote>
-<p>此时 <code>git log</code> 会发现只能看到目标 commit 之后的历史了.</p>
-<h3 id="step-2"><a class="header" href="#step-2">Step 2</a></h3>
-<p>执行 <code>git filter-branch</code> 后, 如果只有当前分支, 则直接强推 (<code>git push --force</code>), 如果有新的 detached 的分支, 为当前分支新建临时分支, 然后临时分支推送到远程仓库. 结束.</p>
-<hr />
-<h3 id="附录"><a class="header" href="#附录">附录</a></h3>
-<h4 id="关于--filter-branch-的注记"><a class="header" href="#关于--filter-branch-的注记">关于 <code> filter-branch</code> 的注记</a></h4>
-<blockquote>
-<p>让你可以通过重写 &lt;rev-list 选项&gt; 中提到的分支来重写 Git 修订历史, 并对每个修订应用自定义过滤器. 这些过滤器可以修改每棵树 (例如删除文件或在所有文件上运行 perl 重写) 或每个提交的信息. 否则, 所有信息 (包括原始提交时间或合并信息) 都将被保留.</p>
-</blockquote>
-<blockquote>
-<p>该命令只会重写命令行中提到的 positive refs (例如, 如果您传递 a..b, 则只会重写 b). 如果不指定过滤器, 提交将在不做任何改动的情况下重新提交, 这通常不会产生任何影响. 不过, 这在将来补偿某些 Git bug 或类似问题时可能会有用, 因此允许使用这种方法.</p>
-</blockquote>
-<blockquote>
-<p>注意: 此命令尊重 <code>.git/info/grafts</code> 文件和 <code>refs/replace/</code> 命名空间中的引用. 如果您定义了任何移植物或替换引用, 运行此命令将使其永久生效.</p>
-</blockquote>
-<ul>
-<li><a href="https://git-scm.com/docs/git-filter-branch/zh_HANS-CN">git-scm.com/docs/git-filter-branch/zh_HANS-CN</a></li>
-</ul>
-<div class="footnote-definition" id="git-philosophy"><sup class="footnote-definition-label">1</sup>
-<p>也有人称之为 Git 哲学.</p>
-</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphviz-dot-风味指南"><a class="header" href="#graphviz-dot-风味指南">Graphviz Dot 风味指南</a></h1>
 <p>本文主要记录 Graphviz 样式的命令行用法, 即 <code>dot</code>. 并给出相关例子, 以备笔者不时之需. 动机是官方文档 <a href="https://graphviz.org/doc/info/command.html">Command Line - Graphviz</a> 稍显简略, 而常用例子则分散于各大论坛不便查阅.</p>
 <h3 id="tldr"><a class="header" href="#tldr">TLDR</a></h3>
@@ -349,6 +298,105 @@ hint: "git config advice.graftFileDeprecated false"
 <p><a href="https://unix.stackexchange.com/questions/670533/how-to-set-default-font-or-default-style-in-graphvizs-dot-language">unix.stackexchange: how-to-set-default-font-or-default-style-in-graphvizs-dot-language</a></p>
 </li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="git-毀滅術"><a class="header" href="#git-毀滅術">Git 毀滅術</a></h1>
+<pre><code>hint: Support for &lt;GIT_DIR&gt;/info/grafts is deprecated
+hint: and will be removed in a future Git version.
+hint:
+hint: Please use "git replace --convert-graft-file"
+hint: to convert the grafts into replace refs.
+hint:
+hint: Turn this message off by running
+hint: "git config advice.graftFileDeprecated false"
+</code></pre>
+<p>版本管理工具 Git 以 “绝不丢失用户的提交” 的理念 <sup class="footnote-reference"><a href="#git-philosophy">1</a></sup> 而著称. 但在 Git 中也存在着「确实地」将 commit 与 log 中的记录 “毁尸灭迹” 的办法. 并且操作起来非常简单, 实际步骤只有两步.</p>
+<blockquote>
+<p>警告: 本文作者对本文提供的方法不负任何责任, 读者通过本文的方法所造成的任何超出读者预期的行为, 均由读者自行负责.</p>
+</blockquote>
+<blockquote>
+<p>特别声明: 本文的方法可以用于删除已经提交至 Github 仓库托管平台的 commit 历史.</p>
+</blockquote>
+<hr />
+<pre><code>⋯ → A → B → C (目标 commit) → D → E → ⋯
+</code></pre>
+<p>本文提供的方法将会删除目标 commit “C” 之前的所有 commit 信息.</p>
+<h3 id="准备工作"><a class="header" href="#准备工作">准备工作</a></h3>
+<p>阅读「警告」与「特别声明」.</p>
+<p><code>git log</code> 查看 commit 历史及对应的 SHA1 值, 复制目标 commit 的 SHA1.</p>
+<h3 id="step-1"><a class="header" href="#step-1">Step 1</a></h3>
+<p>新建 <code>.git/info/grafts</code>, 写入 SHA1.</p>
+<h3 id="检查"><a class="header" href="#检查">检查</a></h3>
+<blockquote>
+<p>这一步显然不是必要的, 只是为了确定前面的操作是否正常.</p>
+</blockquote>
+<p>此时 <code>git log</code> 会发现只能看到目标 commit 之后的历史了.</p>
+<h3 id="step-2"><a class="header" href="#step-2">Step 2</a></h3>
+<p>执行 <code>git filter-branch</code> 后, 如果只有当前分支, 则直接强推 (<code>git push --force</code>), 如果有新的 detached 的分支, 为当前分支新建临时分支, 然后临时分支推送到远程仓库. 结束.</p>
+<hr />
+<h3 id="附录"><a class="header" href="#附录">附录</a></h3>
+<h4 id="关于--filter-branch-的注记"><a class="header" href="#关于--filter-branch-的注记">关于 <code> filter-branch</code> 的注记</a></h4>
+<blockquote>
+<p>让你可以通过重写 &lt;rev-list 选项&gt; 中提到的分支来重写 Git 修订历史, 并对每个修订应用自定义过滤器. 这些过滤器可以修改每棵树 (例如删除文件或在所有文件上运行 perl 重写) 或每个提交的信息. 否则, 所有信息 (包括原始提交时间或合并信息) 都将被保留.</p>
+</blockquote>
+<blockquote>
+<p>该命令只会重写命令行中提到的 positive refs (例如, 如果您传递 a..b, 则只会重写 b). 如果不指定过滤器, 提交将在不做任何改动的情况下重新提交, 这通常不会产生任何影响. 不过, 这在将来补偿某些 Git bug 或类似问题时可能会有用, 因此允许使用这种方法.</p>
+</blockquote>
+<blockquote>
+<p>注意: 此命令尊重 <code>.git/info/grafts</code> 文件和 <code>refs/replace/</code> 命名空间中的引用. 如果您定义了任何移植物或替换引用, 运行此命令将使其永久生效.</p>
+</blockquote>
+<ul>
+<li><a href="https://git-scm.com/docs/git-filter-branch/zh_HANS-CN">git-scm.com/docs/git-filter-branch/zh_HANS-CN</a></li>
+</ul>
+<div class="footnote-definition" id="git-philosophy"><sup class="footnote-definition-label">1</sup>
+<p>也有人称之为 Git 哲学.</p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="wsl-清理支援"><a class="header" href="#wsl-清理支援">WSL 清理支援</a></h1>
+<p>注: 本文的 WSL 特指 WSL2.</p>
+<h3 id="准备工作-1"><a class="header" href="#准备工作-1">准备工作</a></h3>
+<p>Step 1. 通过以下两种方式之一关闭目标 WSL.</p>
+<ul>
+<li><code>wsl --shutdown</code>, 立即终止所有正在运行的分发版和 WSL 2 轻型实用工具虚拟机.</li>
+<li><code>wsl --terminate, -t &lt;Distro&gt;</code>, 终止指定的分发版.</li>
+</ul>
+<p>Step 2. 找到该 WSL 的硬盘映像文件 <code>ext4.vhdx</code>.</p>
+<p>Step 3. 在终端打开 Windows 的磁盘管理工具 <code>diskpart</code>. 并通过</p>
+<pre><code>SELECT VDISK file="\path\to\ext4.vhdx"
+</code></pre>
+<p>选择该虚拟磁盘文件.</p>
+<h3 id="压缩"><a class="header" href="#压缩">压缩</a></h3>
+<p>在 <code>diskpart</code> 中继续操作, 此步骤可能会耗费一定的时间</p>
+<pre><code>compact vdisk
+</code></pre>
+<p>注:</p>
+<ol>
+<li>在部分设备上, <code>compact</code> 前后有时还需要 <code>attach vdisk readonly</code>, <code>detach vdisk</code>.</li>
+<li>对于非 Windows 家庭版, 也可以直接使用
+<pre><code>optimize-vhd -Path path\to\ext4.vhdx -Mode full
+</code></pre>
+</li>
+<li>压缩磁盘主要解决的是 "Linux 清理后 vhdx 尺寸不会主动减小" 的问题,
+而对于具体的 Linux 发行版以及各路包管理器如何清理则不在本文的讨论范围内.</li>
+</ol>
+<h3 id="wsl-迁移"><a class="header" href="#wsl-迁移">WSL 迁移</a></h3>
+<p>有时 WSL 本身就很大, 无法通过 <code>compact vdisk</code> 腾出可用空间. 此时更有效的方法是移动 <code>vhdx</code> 文件至其他空间充裕的分区或磁盘. 这个方法实施起来更加复杂, 但所幸已有封装好的工具: <a href="https://github.com/pxlrbt/move-wsl">Move WSL</a>.</p>
+<hr />
+<p>微软商店能安装的 WSL 虽然包括了主流的 Linux 发行版, 但如果是奔着 Arch 来的又不想在安装和基础配置上折腾, 那这个仓库可能是一个好选择: <a href="https://github.com/yuk7/ArchWSL">https://github.com/yuk7/ArchWSL</a>.</p>
+<h3 id="linux-内部清理"><a class="header" href="#linux-内部清理">Linux 内部清理</a></h3>
+<p>Windows 上有一些优秀的磁盘扫描工具, 通常能够为用户找到大文件所在的位置.
+但可以预见的是, 这些工具并不能直接扫描 WSL 内部的文件系统,
+此时用户可以使用完全 Linux 的方法来处理这个问题. 以下仅举一例</p>
+<pre><code>sudo du -xh --max-depth=1 /
+</code></pre>
+<p>这会输出形如下面的内容</p>
+<pre><code>12G     /root
+24K     /snap
+2.0G    /usr
+12K     /mnt
+1.7G    /var
+177M    /home
+481M    /nix
+72K     /tmp
+16G     /
+</code></pre>
 
                     </main>
 
