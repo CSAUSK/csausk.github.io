@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>附录: WSL 清理支援 - Programs from THE BOOK</title>
+        <title>附录: 图像的影子 - Programs from THE BOOK</title>
 
 
         <!-- Custom HTML head -->
@@ -106,7 +106,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="termux-developer-journals.html"><strong aria-hidden="true">1.</strong> 附录: Termux 开发者日志</a></li><li class="chapter-item expanded "><a href="dot-style.html"><strong aria-hidden="true">2.</strong> 附录: Graphviz Dot 风味指南</a></li><li class="chapter-item expanded "><a href="git-grafts.html"><strong aria-hidden="true">3.</strong> 附录: 黑魔法 - Git 毀滅術</a></li><li class="chapter-item expanded "><a href="wsl-clean-help.html" class="active"><strong aria-hidden="true">4.</strong> 附录: WSL 清理支援</a></li><li class="chapter-item expanded "><a href="image-shadow.html"><strong aria-hidden="true">5.</strong> 附录: 图像的影子</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="termux-developer-journals.html"><strong aria-hidden="true">1.</strong> 附录: Termux 开发者日志</a></li><li class="chapter-item expanded "><a href="dot-style.html"><strong aria-hidden="true">2.</strong> 附录: Graphviz Dot 风味指南</a></li><li class="chapter-item expanded "><a href="git-grafts.html"><strong aria-hidden="true">3.</strong> 附录: 黑魔法 - Git 毀滅術</a></li><li class="chapter-item expanded "><a href="wsl-clean-help.html"><strong aria-hidden="true">4.</strong> 附录: WSL 清理支援</a></li><li class="chapter-item expanded "><a href="image-shadow.html" class="active"><strong aria-hidden="true">5.</strong> 附录: 图像的影子</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -191,66 +191,40 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="wsl-清理支援"><a class="header" href="#wsl-清理支援">WSL 清理支援</a></h1>
-<p>注: 本文的 WSL 特指 WSL2.</p>
-<h3 id="准备工作"><a class="header" href="#准备工作">准备工作</a></h3>
-<p>Step 1. 通过以下两种方式之一关闭目标 WSL.</p>
-<ul>
-<li><code>wsl --shutdown</code>, 立即终止所有正在运行的分发版和 WSL 2 轻型实用工具虚拟机.</li>
-<li><code>wsl --terminate, -t &lt;Distro&gt;</code>, 终止指定的分发版.</li>
-</ul>
-<p>Step 2. 找到该 WSL 的硬盘映像文件 <code>ext4.vhdx</code>.</p>
-<p>Step 3. 在终端打开 Windows 的磁盘管理工具 <code>diskpart</code>. 并通过</p>
-<pre><code>SELECT VDISK file="\path\to\ext4.vhdx"
-</code></pre>
-<p>选择该虚拟磁盘文件.</p>
-<h3 id="压缩"><a class="header" href="#压缩">压缩</a></h3>
-<p>在 <code>diskpart</code> 中继续操作, 此步骤可能会耗费一定的时间</p>
-<pre><code>compact vdisk
-</code></pre>
-<p>注:</p>
+                        <h1 id="图像的影子"><a class="header" href="#图像的影子">图像的影子</a></h1>
+<p>本文只记录两件事, 且这两件事之间没有多大关联.</p>
 <ol>
-<li>在部分设备上, <code>compact</code> 前后有时还需要 <code>attach vdisk readonly</code>, <code>detach vdisk</code>.</li>
-<li>对于非 Windows 家庭版, 也可以直接使用
-<pre><code>optimize-vhd -Path path\to\ext4.vhdx -Mode full
-</code></pre>
-</li>
-<li>压缩磁盘主要解决的是 "Linux 清理后 vhdx 尺寸不会主动减小" 的问题,
-而对于具体的 Linux 发行版以及各路包管理器如何清理则不在本文的讨论范围内.</li>
+<li>图像的隐写术.</li>
+<li>任意图像作为背景的单色渐变效果.</li>
 </ol>
-<h3 id="wsl-迁移"><a class="header" href="#wsl-迁移">WSL 迁移</a></h3>
-<p>有时 WSL 本身就很大, 无法通过 <code>compact vdisk</code> 腾出可用空间. 此时更有效的方法是移动 <code>vhdx</code> 文件至其他空间充裕的分区或磁盘. 这个方法实施起来更加复杂, 但所幸已有封装好的工具: <a href="https://github.com/pxlrbt/move-wsl">Move WSL</a>.</p>
-<hr />
-<p>微软商店能安装的 WSL 虽然包括了主流的 Linux 发行版, 但如果是奔着 Arch 来的又不想在安装和基础配置上折腾, 那这个仓库可能是一个好选择: <a href="https://github.com/yuk7/ArchWSL">https://github.com/yuk7/ArchWSL</a>.</p>
-<h3 id="linux-内部清理"><a class="header" href="#linux-内部清理">Linux 内部清理</a></h3>
-<p>Windows 上有一些优秀的磁盘扫描工具, 通常能够为用户找到大文件所在的位置.
-但可以预见的是, 这些工具并不能直接扫描 WSL 内部的文件系统,
-此时用户可以使用完全 Linux 的方法来处理这个问题. 以下仅举一例</p>
-<pre><code>sudo du -xh --max-depth=1 /
+<p>第一件事可谓相当平凡. 如果不细究原理, 三言两语就能介绍完. 简单地说就是, 对于一张图像 <code>img.png</code>, 能做下面两件事</p>
+<pre><code>cat "img.png" "a.txt" &gt; "img-a.png"
+cat "img.png" "b.zip" &gt; "img-b.png"
 </code></pre>
-<p>这会输出形如下面的内容</p>
-<pre><code>12G     /root
-24K     /snap
-2.0G    /usr
-12K     /mnt
-1.7G    /var
-177M    /home
-481M    /nix
-72K     /tmp
-16G     /
-</code></pre>
+<p>这将使得 <code>img-a.png</code> 和 <code>img-b.png</code> 均能作为正常图像浏览, 但是以正确编码的文本方式打开前者时, 在文件的末尾能够看到写入的 <code>a.txt</code>. 以 <code>zip</code> 压缩包格式打开后者时, 浏览到的内容与 <code>b.zip</code> 一致.</p>
+<h2 id="图像单色渐变"><a class="header" href="#图像单色渐变">图像单色渐变</a></h2>
+<p>这是第二件事, 或许有些图像处理工具自带了类似的功能, 读者可以对比之以便找出更符合预期效果的做法.
+假定有一张宽高为 $(w, h)$ 的图像 $X$, 我们将它作为横版封面 $(w_c,h)$ 左侧的元素, 这里 $w_c &gt; w$ 并且最好有 $w_c \ge 2w$. 具体而言:</p>
+<ol>
+<li>适合 $(w_c, h)$ → 背景色 $B$ → $x$-轴偏移为 $0$.</li>
+</ol>
+<p>这里, 背景色如果从图像 $X$ 的背景中选择, 之后的调整步骤能得到明显地简化, 但为了突出此处方法的一般性, 我们可以任意选择一种颜色.</p>
+<ol start="2">
+<li>图形 → 矩形 → 渐变, 从半透明到背景色 $B$.</li>
+</ol>
+<p>然后将这个带有渐变效果的矩形逆时针旋转 $\frac{\pi}2$ 使得矩形的背景色部分恰好盖住背景和图像的边缘 <sup class="footnote-reference"><a href="#rotate">1</a></sup>, 半透明部分覆盖图像, 反复调整半透明程度、矩形的位置和渐变样式, 直到效果自然. 这样就得到了图像到单色 $B$ 的渐变图.</p>
+<div class="footnote-definition" id="rotate"><sup class="footnote-definition-label">1</sup>
+<p>因为此处的渐变模板是从上至下的效果.</p>
+</div>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="git-grafts.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="wsl-clean-help.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="image-shadow.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -258,13 +232,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="git-grafts.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="wsl-clean-help.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="image-shadow.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

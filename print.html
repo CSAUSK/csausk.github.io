@@ -10,11 +10,10 @@
         <!-- Custom HTML head -->
         
         <!-- KaTeX -->
-        
-        <link href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet">
-        <script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.8/katex.min.js"></script>
-        <script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.8/contrib/auto-render.min.js"></script>
-        <script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.8/contrib/copy-tex.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" crossorigin="anonymous"></script>
         
         <script>
           document.addEventListener("DOMContentLoaded", function() {
@@ -108,7 +107,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="termux-developer-journals.html"><strong aria-hidden="true">1.</strong> 附录: Termux 开发者日志</a></li><li class="chapter-item expanded "><a href="dot-style.html"><strong aria-hidden="true">2.</strong> 附录: Graphviz Dot 风味指南</a></li><li class="chapter-item expanded "><a href="git-grafts.html"><strong aria-hidden="true">3.</strong> 附录: 黑魔法 - Git 毀滅術</a></li><li class="chapter-item expanded "><a href="wsl-clean-help.html"><strong aria-hidden="true">4.</strong> 附录: WSL 清理支援</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="termux-developer-journals.html"><strong aria-hidden="true">1.</strong> 附录: Termux 开发者日志</a></li><li class="chapter-item expanded "><a href="dot-style.html"><strong aria-hidden="true">2.</strong> 附录: Graphviz Dot 风味指南</a></li><li class="chapter-item expanded "><a href="git-grafts.html"><strong aria-hidden="true">3.</strong> 附录: 黑魔法 - Git 毀滅術</a></li><li class="chapter-item expanded "><a href="wsl-clean-help.html"><strong aria-hidden="true">4.</strong> 附录: WSL 清理支援</a></li><li class="chapter-item expanded "><a href="image-shadow.html"><strong aria-hidden="true">5.</strong> 附录: 图像的影子</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -397,6 +396,31 @@ hint: "git config advice.graftFileDeprecated false"
 72K     /tmp
 16G     /
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="图像的影子"><a class="header" href="#图像的影子">图像的影子</a></h1>
+<p>本文只记录两件事, 且这两件事之间没有多大关联.</p>
+<ol>
+<li>图像的隐写术.</li>
+<li>任意图像作为背景的单色渐变效果.</li>
+</ol>
+<p>第一件事可谓相当平凡. 如果不细究原理, 三言两语就能介绍完. 简单地说就是, 对于一张图像 <code>img.png</code>, 能做下面两件事</p>
+<pre><code>cat "img.png" "a.txt" &gt; "img-a.png"
+cat "img.png" "b.zip" &gt; "img-b.png"
+</code></pre>
+<p>这将使得 <code>img-a.png</code> 和 <code>img-b.png</code> 均能作为正常图像浏览, 但是以正确编码的文本方式打开前者时, 在文件的末尾能够看到写入的 <code>a.txt</code>. 以 <code>zip</code> 压缩包格式打开后者时, 浏览到的内容与 <code>b.zip</code> 一致.</p>
+<h2 id="图像单色渐变"><a class="header" href="#图像单色渐变">图像单色渐变</a></h2>
+<p>这是第二件事, 或许有些图像处理工具自带了类似的功能, 读者可以对比之以便找出更符合预期效果的做法.
+假定有一张宽高为 $(w, h)$ 的图像 $X$, 我们将它作为横版封面 $(w_c,h)$ 左侧的元素, 这里 $w_c &gt; w$ 并且最好有 $w_c \ge 2w$. 具体而言:</p>
+<ol>
+<li>适合 $(w_c, h)$ → 背景色 $B$ → $x$-轴偏移为 $0$.</li>
+</ol>
+<p>这里, 背景色如果从图像 $X$ 的背景中选择, 之后的调整步骤能得到明显地简化, 但为了突出此处方法的一般性, 我们可以任意选择一种颜色.</p>
+<ol start="2">
+<li>图形 → 矩形 → 渐变, 从半透明到背景色 $B$.</li>
+</ol>
+<p>然后将这个带有渐变效果的矩形逆时针旋转 $\frac{\pi}2$ 使得矩形的背景色部分恰好盖住背景和图像的边缘 <sup class="footnote-reference"><a href="#rotate">1</a></sup>, 半透明部分覆盖图像, 反复调整半透明程度、矩形的位置和渐变样式, 直到效果自然. 这样就得到了图像到单色 $B$ 的渐变图.</p>
+<div class="footnote-definition" id="rotate"><sup class="footnote-definition-label">1</sup>
+<p>因为此处的渐变模板是从上至下的效果.</p>
+</div>
 
                     </main>
 
